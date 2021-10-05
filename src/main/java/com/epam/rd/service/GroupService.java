@@ -10,12 +10,19 @@ import com.epam.rd.exception.*;
 import java.util.List;
 
 public interface GroupService {
-    Group addGroup(GroupDTO groupDTO) throws UnableToAddGroup, GroupAlreadyExistsException;
+    Group addGroup(GroupDTO groupDTO) throws GroupAlreadyExistsException;
+
     List<Record> findAllRecordByGroupName(String name) throws NoRecordFoundForGroup, NoGroupFoundForAccount;
-    Group updateGroup(GroupDTO groupDTO) throws UnableToUpdateGroup, NoGroupFoundForAccount;
+
+    Group updateGroup(GroupDTO groupDTO) throws NoGroupFoundForAccount;
+
     List<Group> findAllGroups() throws NoGroupFoundForAccount;
+
+    Group deleteGroup(String name) throws NoGroupFoundForAccount, GroupShouldNotContainsRecords;
+
+    void setAccount(LoginDTO LoginDTO);
+
     Group findGroupByName(String name) throws NoGroupFoundForAccount;
-    Group deleteGroup(String name) throws NoGroupFoundForAccount, GroupShouldNotContainsRecords, UnableToDeleteGroup;
-    void setAccount(LoginDTO loginDTO);
+
     Account getAccount();
 }

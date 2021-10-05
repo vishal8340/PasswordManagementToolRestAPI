@@ -3,7 +3,6 @@ package com.epam.rd.controller;
 import com.epam.rd.dto.RegisterDTO;
 import com.epam.rd.entity.Account;
 import com.epam.rd.exception.AccountAlreadyExistsException;
-import com.epam.rd.exception.UnableToRegisterAccount;
 import com.epam.rd.service.AccountServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -43,23 +42,6 @@ public class RegisterRestControllerTest {
         Assertions.assertEquals(406, status);
         String content = mvcResult.getResponse().getContentAsString();
         Assertions.assertEquals("Oops! Account already exists!!", content);
-    }
-
-    @Test
-    public void testRegisterUserThrowExceptionWhenUnableToRegisterAccount() throws Exception {
-        RegisterDTO registerDTO = new RegisterDTO("Vishal Kumar", "KGR009517", "Vishi834019");
-        when(accountServiceImpl.registerAccount(any())).thenThrow(new UnableToRegisterAccount());
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/api/registerUser")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(registerDTO));
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Unable to register!! Try again", content);
     }
 
     @Test

@@ -8,19 +8,18 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
 public interface RecordRepository extends JpaRepository<Record, Integer> {
     List<Record> findByAccount(Account account);
 
-    boolean existsByUrlAndAccount(String url, Account account);
-
-    Record findByUrlAndAccount(String url, Account account);
+    Optional<Record> findByUrlAndAccount(String url, Account account);
 
     List<Record> findByGroupAndAccount(Group existGroup, Account account);
 
-    Record findByIdAndAccount(int id, Account account);
+    Optional<Record> findByIdAndAccount(int id, Account account);
 
     void deleteByIdAndAccount(int id, Account account);
 }

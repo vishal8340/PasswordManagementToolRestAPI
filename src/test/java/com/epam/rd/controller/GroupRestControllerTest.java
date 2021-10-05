@@ -86,25 +86,7 @@ public class GroupRestControllerTest {
         String content = mvcResult.getResponse().getContentAsString();
         Assertions.assertEquals("Oops! Group already exists!!", content);
     }
-
-    @Test
-    public void testAddGroupThrowExceptionWhenUnableToAddGroup() throws Exception {
-        GroupDTO groupDTO = new GroupDTO("Google", "storing google based accounts");
-        when(groupServiceImpl.addGroup(any())).thenThrow(new UnableToAddGroup());
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/api/group/addGroup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(groupDTO));
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Oops! Unable to Add Group!!", content);
-    }
-
+    
     @Test
     public void testAddGroupDoesNotThrowExceptionWhileAddingGroupSuccessfully() throws Exception {
         GroupDTO groupDTO = new GroupDTO("Google", "storing google based accounts");
@@ -177,24 +159,6 @@ public class GroupRestControllerTest {
     }
 
     @Test
-    public void testUpdateGroupThrowExceptionWhenUnableToUpdateGroup() throws Exception {
-        GroupDTO groupDTO = new GroupDTO("Google", "storing google based accounts");
-        when(groupServiceImpl.updateGroup(any())).thenThrow(new UnableToUpdateGroup());
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/api/group/updateGroup/3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(groupDTO));
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Oops! unable to update group!!", content);
-    }
-
-    @Test
     public void testUpdateGroupDoesNotThrowExceptionWhileUpdatingGroupSuccessfully() throws Exception {
         Group updatedGroup = new Group();
         GroupDTO groupDTO = new GroupDTO("Google", "storing google based accounts");
@@ -241,21 +205,6 @@ public class GroupRestControllerTest {
         Assertions.assertEquals(406, status);
         String content = mvcResult.getResponse().getContentAsString();
         Assertions.assertEquals("Oops! No group found!!", content);
-    }
-
-    @Test
-    public void testDeleteGroupThrowExceptionWhenUnableToDeleteGroup() throws Exception {
-        when(groupServiceImpl.deleteGroup(any())).thenThrow(new UnableToDeleteGroup());
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .delete("/api/group/deleteGroup/Google");
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Oops! Unable to delete group.", content);
     }
 
     @Test

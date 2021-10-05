@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LoginDTOTest {
-    LoginDTO loginDTO;
+    private LoginDTO loginDTO;
 
     @BeforeEach
     void setup() {

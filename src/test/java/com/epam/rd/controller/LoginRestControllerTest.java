@@ -87,5 +87,4 @@ public class LoginRestControllerTest {
         String content = mvcResult.getResponse().getContentAsString();
         Assertions.assertEquals(accountName, content);
     }
-
 }

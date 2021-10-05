@@ -3,7 +3,7 @@ package com.epam.rd.controller;
 import com.epam.rd.dto.RecordDTO;
 import com.epam.rd.entity.Group;
 import com.epam.rd.entity.Record;
-import com.epam.rd.exception.*;
+import com.epam.rd.exception.NoGroupFoundForAccount;
 import com.epam.rd.service.GroupServiceImpl;
 import com.epam.rd.service.RecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,25 +28,25 @@ public class RecordRestController {
     private static final String RECORD_DELETED = "Record deleted successfully!!";
 
     @GetMapping(value = "/viewRecords")
-    public ResponseEntity<List<Record>> getUserRecordList() throws NoRecordFoundForAccount {
+    public ResponseEntity<List<Record>> getUserRecordList() {
         List<Record> recordList = recordServiceImpl.findAllRecords();
         return new ResponseEntity<>(recordList, HttpStatus.OK);
     }
 
     @GetMapping(value = "showEditRecordForm/{url}")
-    public ResponseEntity<Object> getEditRecordForm(@PathVariable String url) throws NoRecordFoundForAccountBasedOnUrl {
-        Record fetchRecord = recordServiceImpl.findRecordBasedOnUrl(url);
+    public ResponseEntity<Object> getEditRecordForm(@PathVariable String url) {
+        Record fetchRecord = recordServiceImpl.findRecordByUrl(url);
         return new ResponseEntity<>(fetchRecord, HttpStatus.OK);
     }
 
     @PutMapping(value = "/updateRecord")
-    public ResponseEntity<Object> updateRecord(@RequestBody @Valid RecordDTO recordDTO) throws UnableToUpdateRecord, NoRecordFoundForAccountBasedOnUrl {
+    public ResponseEntity<Object> updateRecord(@RequestBody @Valid RecordDTO recordDTO) {
         Record updatedRecord = recordServiceImpl.updateRecord(recordDTO);
         return new ResponseEntity<>(RECORD_UPDATED + " " + updatedRecord, HttpStatus.OK);
     }
 
     @GetMapping(value = "showNewRecordForm")
-    public ResponseEntity<List<String>> getNewRecordForm() throws NoGroupFoundForAccount {
+    public ResponseEntity<List<String>> getNewRecordForm() {
         return new ResponseEntity<>(getGroupNameList(), HttpStatus.OK);
     }
 
@@ -56,13 +56,13 @@ public class RecordRestController {
     }
 
     @PostMapping(value = "/addRecord")
-    public ResponseEntity<Object> addRecord(@RequestBody @Valid RecordDTO recordDTO) throws RecordAlreadyExistsException, UnableToAddRecord {
+    public ResponseEntity<Object> addRecord(@RequestBody @Valid RecordDTO recordDTO) {
         Record addedRecord = recordServiceImpl.addRecord(recordDTO);
         return new ResponseEntity<>(RECORD_ADDED + " " + addedRecord, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deleteRecord/{id}")
-    public ResponseEntity<Object> deleteRecord(@PathVariable int id) throws NoRecordFoundForAccountBasedOnId {
+    public ResponseEntity<Object> deleteRecord(@PathVariable int id) {
         Record deletedRecord = recordServiceImpl.deleteRecord(id);
         return new ResponseEntity<>(RECORD_DELETED + " " + deletedRecord, HttpStatus.OK);
     }

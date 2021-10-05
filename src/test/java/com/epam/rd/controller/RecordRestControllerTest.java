@@ -40,7 +40,7 @@ public class RecordRestControllerTest {
     @Test
     public void testShowEditRecordForm() throws Exception {
         Record record = new Record("KGR009517", "Vishal834019", "http://www.master.com", "Record1");
-        when(recordServiceImpl.findRecordBasedOnUrl(any())).thenReturn(record);
+        when(recordServiceImpl.findRecordByUrl(any())).thenReturn(record);
 
         String url = "www.master.com";
 
@@ -87,24 +87,6 @@ public class RecordRestControllerTest {
     }
 
     @Test
-    public void testAddRecordThrowExceptionWhenUnableToAddRecord() throws Exception {
-        RecordDTO recordDTO = new RecordDTO("KGR009517", "Vishal834019", "http://www.google.com", "records");
-        when(recordServiceImpl.addRecord(any())).thenThrow(new UnableToAddRecord());
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/api/record/addRecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(recordDTO));
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Unable to add Record!!", content);
-    }
-
-    @Test
     public void testAddRecordDoesNotThrowExceptionWhileAddingNewRecord() throws Exception {
         final String RECORD_ADDED = "Record added successfully!!";
         Record addedRecord = new Record();
@@ -140,24 +122,6 @@ public class RecordRestControllerTest {
         Assertions.assertEquals(406, status);
         String content = mvcResult.getResponse().getContentAsString();
         Assertions.assertEquals("Oops! No Record Found For Input Url!!", content);
-    }
-
-    @Test
-    public void testUpdateRecordThrowExceptionWhenUnableToUpdateRecord() throws Exception {
-        RecordDTO recordDTO = new RecordDTO("KGR009517", "Vishal834019", "http://www.google.com", "records");
-        when(recordServiceImpl.updateRecord(any())).thenThrow(new UnableToUpdateRecord());
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .put("/api/record/updateRecord")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(recordDTO));
-
-        MvcResult mvcResult = mvc.perform(requestBuilder).andReturn();
-
-        int status = mvcResult.getResponse().getStatus();
-        Assertions.assertEquals(406, status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Assertions.assertEquals("Unable to update record!!", content);
     }
 
     @Test

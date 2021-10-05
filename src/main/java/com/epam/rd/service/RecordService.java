@@ -9,17 +9,17 @@ import com.epam.rd.exception.*;
 import java.util.List;
 
 public interface RecordService {
-    Record addRecord(RecordDTO recordDTO) throws UnableToAddRecord, RecordAlreadyExistsException;
+    Record addRecord(RecordDTO recordDTO) throws RecordAlreadyExistsException, NoGroupFoundForAccount;
 
-    Record findRecordBasedOnUrl(String url) throws NoRecordFoundForAccountBasedOnUrl;
+    Record findRecordByUrl(String url) throws NoRecordFoundForAccountBasedOnUrl;
 
     List<Record> findAllRecords() throws NoRecordFoundForAccount;
 
-    Record updateRecord(RecordDTO recordDTO) throws UnableToUpdateRecord, NoRecordFoundForAccountBasedOnUrl;
-
-    Record deleteRecord(int id) throws NoRecordFoundForAccountBasedOnId;
+    Record updateRecord(RecordDTO recordDTO) throws NoRecordFoundForAccountBasedOnUrl;
 
     void setAccount(LoginDTO loginDTO);
+
+    Record deleteRecord(int id) throws NoRecordFoundForAccountBasedOnId;
 
     Account getAccount();
 }

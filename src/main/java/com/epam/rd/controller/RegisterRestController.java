@@ -2,8 +2,6 @@ package com.epam.rd.controller;
 
 import com.epam.rd.dto.RegisterDTO;
 import com.epam.rd.entity.Account;
-import com.epam.rd.exception.AccountAlreadyExistsException;
-import com.epam.rd.exception.UnableToRegisterAccount;
 import com.epam.rd.service.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,7 @@ public class RegisterRestController {
 
 
     @PostMapping(value = "/api/registerUser")
-    public ResponseEntity<String> registerUser(@RequestBody @Valid RegisterDTO registerDTO) throws AccountAlreadyExistsException, UnableToRegisterAccount {
+    public ResponseEntity<String> registerUser(@RequestBody @Valid RegisterDTO registerDTO) {
         Account registerAccount = accountServiceImpl.registerAccount(registerDTO);
         return new ResponseEntity<>(ACCOUNT_ADDED + " " + registerAccount, HttpStatus.OK);
     }
